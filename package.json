@@ -1,0 +1,23 @@
+{
+  "name": "matchbot-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Glexen/matchbot-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Glexen/matchbot-bot/issues"
+  },
+  "homepage": "https://github.com/Glexen/matchbot-bot#readme",
+  "dependencies": {
+    "telegraf": "^3.38.0"
+  }
+}
