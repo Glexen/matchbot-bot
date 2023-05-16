@@ -1,7 +1,10 @@
-const apiUrl = "http://localhost:3000/api";
+require("dotenv").config()
+
+const apiUrl = process.env.API_URL
+const apiVersion = process.env.API_VERSION
 
 const getData = (app, command, id = "") => {
-  return fetch(`${apiUrl}/${app}/${command}/${id}`, {
+  return fetch(`${apiUrl}/${apiVersion}/${app}/${command}/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -9,38 +12,34 @@ const getData = (app, command, id = "") => {
   })
     .then((response) => response.json())
     .then((data) => {
-      return data;
-    });
-};
+      return data
+    })
+}
 
 const getBotToken = () => {
-  return getData("botSetting", "getBotToken");
-};
+  return getData("botSetting", "botToken")
+}
 
 const getHelloMessage = () => {
-  return getData("languageProfile", "getHelloMessage", "1");
-};
-
-const getLanguages = () => { 
-    return getData("languageProfile", "all")
+  return getData("languageProfile", "helloMessage", "1")
 }
-const getAllData = () => {
-  const botToken = getBotToken().then((botToken) => {
-    return { botToken }
-  })
-  const helloMessage = getHelloMessage().then((helloMessage) => {
-    return { helloMessage }
-  })
-  const languages = getLanguages().then((languages) => {
-    return { languages }
-  })
 
-  return Promise.all([botToken, helloMessage, languages]).then((results) => {
-    const data = results.reduce((accumulator, result) => {
-      return { ...accumulator, ...result };
-    }, {});
-    return data;
-  });
-};
+const getLanguages = () => {
+  return getData("languageProfile","")
+}
+const getBotSettings = async () => {
+  try {
+    const [botToken, helloMessage, languages] = await Promise.all([
+      getBotToken(),
+      getHelloMessage(),
+      getLanguages(),
+    ])
 
-module.exports = getAllData;
+    return { botToken, helloMessage, languages }
+  } catch (error) {
+    console.error("Error retrieving bot settings:", error)
+    throw error
+  }
+}
+
+module.exports = getBotSettings
